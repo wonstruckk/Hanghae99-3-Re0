@@ -7,7 +7,7 @@ from flask import Flask, render_template, jsonify, request, redirect, url_for
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
 
-
+ca = certifi.where()
 
 
 app = Flask(__name__)
@@ -19,7 +19,7 @@ SECRET_KEY = 'SPARTA'
 # client = MongoClient('mongodb://54.180.86.0', 27017, username="test", password="test")
 # db = client.myproject
 
-client = MongoClient('mongodb+srv://test:sparta@cluster0.owryr0x.mongodb.net/?retryWrites=true&w=majority')
+client = MongoClient('mongodb+srv://test:sparta@cluster0.owryr0x.mongodb.net/?retryWrites=true&w=majority', tlsCAFile=ca)
 db = client.myproject
 #db = client.dbsparta
 
