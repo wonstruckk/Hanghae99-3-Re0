@@ -123,13 +123,6 @@ def posting():
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
-@app.route('/sign_up/check_dup', methods=['POST'])
-def check_dup():
-    # ID 중복확인
-    username_receive = request.form['username_give']
-    exists = bool(db.users.find_one({"username": username_receive}))
-    return jsonify({'result': 'success', 'exists': exists})
-
 
 @app.route("/get_posts", methods=['GET'])
 def get_posts():
