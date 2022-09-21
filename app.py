@@ -23,10 +23,6 @@ client = MongoClient('mongodb+srv://test:sparta@cluster0.owryr0x.mongodb.net/?re
 db = client.myproject
 #db = client.dbsparta
 
-@app.route('/login')
-def login():
-    msg = request.args.get("msg")
-    return render_template('login1.html', msg=msg)
 
 
 @app.route('/')
@@ -42,6 +38,13 @@ def home():
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
+
+@app.route('/login')
+def login():
+    msg = request.args.get("msg")
+    return render_template('login.html', msg=msg)
+
 
 @app.route('/user/<username>')
 def user(username):
@@ -91,6 +94,14 @@ def sign_up():
     }
     db.users.insert_one(doc)
     return jsonify({'result': 'success'})
+
+@app.route('/sign_up/check_dup', methods=['POST'])
+def check_dup():
+    # ID 중복확인
+    username_receive = request.form['username_give']
+    exists = bool(db.users.find_one({"username": username_receive}))
+    return jsonify({'result': 'success', 'exists': exists})
+
 
 @app.route('/posting', methods=['POST'])
 def posting():
