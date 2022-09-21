@@ -13,12 +13,12 @@ app.config['UPLOAD_FOLDER'] = "./static/profile_pics"
 
 SECRET_KEY = 'SPARTA'
 
-client = MongoClient('mongodb://54.180.86.0', 27017, username="test", password="test")
-db = client.myproject
-
-# client = MongoClient('mongodb+srv://test:sparta@cluster0.owryr0x.mongodb.net/?retryWrites=true&w=majority')
+# client = MongoClient('mongodb://54.180.86.0', 27017, username="test", password="test")
 # db = client.myproject
-# db = client.dbsparta
+
+client = MongoClient('mongodb+srv://test:sparta@cluster0.owryr0x.mongodb.net/?retryWrites=true&w=majority')
+db = client.myproject
+#db = client.dbsparta
 
 
 
@@ -32,7 +32,6 @@ def home():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
         return render_template('review.html', user_info=user_info)
-
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -45,7 +44,6 @@ def user(username):
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         status = (username == payload["id"])  # 내 프로필이면 True, 다른 사람 프로필 페이지면 False
-
         user_info = db.users.find_one({"username": username}, {"_id": False})
         return render_template('user.html', user_info=user_info, status=status)
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
@@ -69,7 +67,7 @@ def posting():
             "date": date_receive
         }
         db.posts.insert_one(doc)
-        return jsonify({"result": "success", 'msg': '포스팅 성공'})
+        return jsonify({"result": "success", 'msg': '포스팅 완료'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
