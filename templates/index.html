@@ -1,10 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>라면 뭐먹지?</title>
 
+      <!-- Bulma CSS -->
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+      <!-- Font Awesome CSS -->
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+      <link href="../static/mystyle.css" rel="stylesheet">
+      <link rel="preconnect" href="https://fonts.gstatic.com">
+      <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&family=Stylish&display=swap" rel="stylesheet">
+      <link href="{{ url_for('static', filename='mystyle.css') }}" rel="stylesheet">
+
+      <!-- JS -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+      <script src="{{ url_for('static', filename='myjs.js') }}"></script>
+
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Jua&display=swap" rel="stylesheet">
+
+
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+              integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+              crossorigin="anonymous"></script>
+
+
+
+        <style>
+            * {
+                font-family: 'Stylish', sans-serif;
+            }
+            .wrap {
+                background-color: ;
+                min-height: 100vh;
+                padding-bottom: 50px;
+                margin-top: 100px;
+            }
+
+            .banner {
+                width: 100%;
+                height: 200px;
+
+                background-color: white;
+                background-image: url('{{ url_for("static", filename="md_logo.png") }}');
+
+                background-position: center;
+                background-size: contain;
+                background-repeat: no-repeat;
+
+                cursor: pointer;
+            }
+        </style>
+
+        <script>
+              $(document).ready(function () {
+                 listing()
+             });
+             function listing() {
+
+                 $.ajax({
+                     type: 'GET',
+                     url: "/index",
+                     data: {},
+                     success: function (response) {
+                         let rows = response['all_noodles']
+                         for (let i = 1; i < rows.length; i++) {
+                             let title = rows[i]['title']
+                             let img = rows[i]['img']
+
+                             let temp_html =`<div class="col">
+                                                <div class="card">
+                                                    <img src="${img}" class="card-img-top"
+                                                         alt="...">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">${title}</h5>
+                                                    </div>
+                                                </div>
+                                            </div>`
+                             $('#cards-box').append(temp_html)
+
+                         }
+                     }
+                 })
+             }
+
+        </script>
+
+    </head>
+    <body>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+          <img src="../static/ns_logo.png" width="112" height="28">
+        </a>
+
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+          <a class="navbar-item">
+            홈
+          </a>
+
+          <a class="navbar-item">
+            브랜드
+          </a>
+
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link">
+              더보기
+            </a>
+
+            <div class="navbar-dropdown">
+              <a class="navbar-item">
+                스낵
+              </a>
+              <a class="navbar-item">
+                음료
+              </a>
+              <a class="navbar-item">
+                간편식
+              </a>
+              <hr class="navbar-divider">
+              <a class="navbar-item">
+                채용
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="navbar-end">
+          <div class="navbar-item">
+            <div class="buttons">
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </nav>
+
+    <section class="hero is-danger">
+      <div class="hero-body">
+        <p class="title">
+          라면 뭐 먹지?
+        </p>
+      </div>
+    </section>
+
+    <div class="wrap">
+        <div class="mycards" >
+            <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
+                <div class="col">
+                    <div class="card">
+                      <a href="/review">
+                        <img src="http://image.nongshim.com/non/pro/1657759955722.jpg" class="card-img-top"
+                             alt="...">
+                      </a>
+                        <div class="card-body">
+                            <h5 class="card-title">누들핏 아믁탕맛</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </body>
-</html>
